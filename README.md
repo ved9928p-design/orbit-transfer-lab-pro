@@ -4,12 +4,12 @@ An interactive web application that models ideal Hohmann orbital transfers betwe
 
 ## Features
 
-- 🚀 Interactive mission planner
-- 🌍 Earth, Mars, and Moon simulations
-- 📈 Delta-v calculations
-- ⏱️ Transfer time calculations
-- 🛰️ Orbital transfer visualization
-- 💻 Built with HTML, CSS, and JavaScript
+-  Interactive mission planner
+-  Earth, Mars, and Moon simulations
+-  Delta-v calculations
+-  Transfer time calculations
+-  Orbital transfer visualization
+-  Built with HTML, CSS, and JavaScript
 
 ## Physics
 

@@ -1,4 +1,4 @@
-# astrodynamics-mission-planner
+# orbit-transfer-lab
 
 An interactive web application that models ideal Hohmann orbital transfers between circular orbits around Earth, Mars, and the Moon.
 

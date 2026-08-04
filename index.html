@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Interactive Hohmann transfer simulator for visualizing orbital mechanics, delta-v, and transfer time." />
+  <title>Orbit Transfer Lab | Ved Patel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <canvas id="starfield" aria-hidden="true"></canvas>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Orbit Transfer Lab home">
+      <span class="brand-mark">OT</span>
+      <span>Orbit Transfer Lab</span>
+    </a>
+    <nav aria-label="Primary navigation">
+      <a href="#simulator">Simulator</a>
+      <a href="#physics">Physics</a>
+      <a href="#challenge">Challenge</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero section-shell">
+      <div class="hero-copy">
+        <p class="eyebrow">Interactive orbital mechanics</p>
+        <h1>Plan a Hohmann transfer.<br><span>See every burn.</span></h1>
+        <p class="hero-text">Explore how spacecraft move between circular orbits around Earth, the Moon, and Mars. Calculate delta-v, transfer time, orbital velocity, and every equation behind the result.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#simulator">Launch simulator</a>
+          <a class="button secondary" href="#physics">View the physics</a>
+        </div>
+        <div class="hero-stats" aria-label="Project highlights">
+          <div><strong>3</strong><span>Celestial bodies</span></div>
+          <div><strong>2</strong><span>Impulse burns</span></div>
+          <div><strong>1</strong><span>Transfer ellipse</span></div>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="orbit orbit-outer"><span class="satellite"></span></div>
+        <div class="orbit orbit-transfer"></div>
+        <div class="planet-preview"><span></span></div>
+        <div class="visual-label label-one">Δv₁</div>
+        <div class="visual-label label-two">Δv₂</div>
+      </div>
+    </section>
+
+    <section id="simulator" class="section-shell section-block">
+      <div class="section-heading">
+        <p class="eyebrow">Mission control</p>
+        <h2>Orbital transfer simulator</h2>
+        <p>Choose a central body and two circular-orbit altitudes. The lab models an ideal two-impulse Hohmann transfer.</p>
+      </div>
+
+      <div class="simulator-grid">
+        <aside class="control-panel card">
+          <div class="panel-title-row">
+            <h3>Mission parameters</h3>
+            <span id="missionTypeBadge" class="badge">Orbital raising</span>
+          </div>
+
+          <label for="bodySelect">Central body</label>
+          <select id="bodySelect">
+            <option value="earth">Earth</option>
+            <option value="moon">Moon</option>
+            <option value="mars">Mars</option>
+          </select>
+
+          <div id="bodyInfo" class="body-info" aria-live="polite"></div>
+
+          <div class="input-grid">
+            <div>
+              <label for="initialAltitude">Initial altitude</label>
+              <div class="input-with-unit">
+                <input id="initialAltitude" type="number" min="1" step="1" value="400" inputmode="decimal" />
+                <span>km</span>
+              </div>
+            </div>
+            <div>
+              <label for="targetAltitude">Target altitude</label>
+              <div class="input-with-unit">
+                <input id="targetAltitude" type="number" min="1" step="1" value="35786" inputmode="decimal" />
+                <span>km</span>
+              </div>
+            </div>
+          </div>
+
+          <p id="formError" class="form-error" role="alert"></p>
+
+          <div class="preset-section">
+            <span class="field-label">Quick presets</span>
+            <div class="preset-grid">
+              <button class="preset" data-body="earth" data-start="400" data-target="35786">LEO → GEO</button>
+              <button class="preset" data-body="earth" data-start="400" data-target="2000">LEO → MEO</button>
+              <button class="preset" data-body="moon" data-start="100" data-target="1000">Low lunar → High</button>
+              <button class="preset" data-body="mars" data-start="250" data-target="17000">Low Mars → High</button>
+            </div>
+          </div>
+
+          <button id="calculateButton" class="button primary full-width">Run mission analysis</button>
+          <button id="resetButton" class="button ghost full-width">Reset mission</button>
+        </aside>
+
+        <div class="visualization-panel card">
+          <div class="visualization-topbar">
+            <div>
+              <span class="status-dot"></span>
+              <span id="simulationStatus">Mission ready</span>
+            </div>
+            <button id="replayButton" class="text-button">Replay animation</button>
+          </div>
+          <canvas id="orbitCanvas" width="900" height="620" aria-label="Animated Hohmann transfer visualization"></canvas>
+          <div class="legend">
+            <span><i class="legend-line initial"></i>Initial orbit</span>
+            <span><i class="legend-line transfer"></i>Transfer orbit</span>
+            <span><i class="legend-line target"></i>Target orbit</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="resultsSection" class="results-section" aria-live="polite">
+        <div class="metric-card card">
+          <span>Burn 1</span><strong id="deltaV1">—</strong><small id="burn1Direction">Departure impulse</small>
+        </div>
+        <div class="metric-card card">
+          <span>Burn 2</span><strong id="deltaV2">—</strong><small id="burn2Direction">Arrival impulse</small>
+        </div>
+        <div class="metric-card card featured">
+          <span>Total delta-v</span><strong id="totalDeltaV">—</strong><small>Ideal impulsive maneuver</small>
+        </div>
+        <div class="metric-card card">
+          <span>Transfer time</span><strong id="transferTime">—</strong><small>Half the transfer period</small>
+        </div>
+      </div>
+
+      <article class="mission-report card">
+        <div class="report-heading">
+          <div>
+            <p class="eyebrow">Analysis output</p>
+            <h3>Mission report</h3>
+          </div>
+          <span id="reportTimestamp">Awaiting calculation</span>
+        </div>
+        <div id="reportGrid" class="report-grid"></div>
+        <div class="report-actions">
+          <button id="copyButton" class="button secondary">Copy results</button>
+          <button id="downloadButton" class="button secondary">Download report</button>
+          <button id="printButton" class="button ghost">Print report</button>
+        </div>
+      </article>
+    </section>
+
+    <section id="physics" class="section-shell section-block">
+      <div class="section-heading">
+        <p class="eyebrow">Under the hood</p>
+        <h2>The physics behind the mission</h2>
+        <p>The simulator uses the ideal two-body approximation, circular starting and ending orbits, and instantaneous coplanar burns.</p>
+      </div>
+
+      <div class="physics-grid">
+        <article class="card equation-card">
+          <span class="equation-number">01</span>
+          <h3>Orbital radius</h3>
+          <p class="equation">r = R + h</p>
+          <p>Altitude is measured from the surface, while orbital equations require distance from the body's center.</p>
+        </article>
+        <article class="card equation-card">
+          <span class="equation-number">02</span>
+          <h3>Circular velocity</h3>
+          <p class="equation">v = √(μ / r)</p>
+          <p>Orbital speed depends on the gravitational parameter μ and orbital radius r.</p>
+        </article>
+        <article class="card equation-card">
+          <span class="equation-number">03</span>
+          <h3>Vis-viva equation</h3>
+          <p class="equation">v = √[μ(2/r − 1/a)]</p>
+          <p>This gives spacecraft velocity at any point along the elliptical transfer orbit.</p>
+        </article>
+        <article class="card equation-card">
+          <span class="equation-number">04</span>
+          <h3>Transfer time</h3>
+          <p class="equation">t = π√(a³ / μ)</p>
+          <p>A Hohmann transfer takes half of the elliptical transfer orbit's full period.</p>
+        </article>
+      </div>
+
+      <details class="calculation-steps card" open>
+        <summary>View calculation steps using your mission</summary>
+        <div id="calculationSteps" class="steps-content"></div>
+      </details>
+    </section>
+
+    <section id="challenge" class="section-shell section-block challenge-section">
+      <div class="challenge-copy">
+        <p class="eyebrow">Classroom mode</p>
+        <h2>Mission challenge: reach GEO</h2>
+        <p>Start from a 400 km low Earth orbit and estimate the total delta-v needed to reach a 35,786 km geostationary-altitude orbit.</p>
+        <div class="challenge-entry">
+          <div class="input-with-unit">
+            <input id="challengeGuess" type="number" min="0" step="0.01" placeholder="Your estimate" inputmode="decimal" />
+            <span>km/s</span>
+          </div>
+          <button id="challengeButton" class="button primary">Check estimate</button>
+        </div>
+        <p id="challengeFeedback" class="challenge-feedback" aria-live="polite"></p>
+      </div>
+      <div class="challenge-card card">
+        <span class="challenge-label">MISSION 01</span>
+        <h3>Low Earth Orbit → GEO</h3>
+        <div><span>Departure altitude</span><strong>400 km</strong></div>
+        <div><span>Target altitude</span><strong>35,786 km</strong></div>
+        <div><span>Central body</span><strong>Earth</strong></div>
+        <button id="loadChallengeButton" class="button secondary full-width">Load into simulator</button>
+      </div>
+    </section>
+
+    <section id="about" class="section-shell section-block about-section">
+      <div>
+        <p class="eyebrow">Project information</p>
+        <h2>Built to make orbital mechanics visible</h2>
+      </div>
+      <div class="about-content">
+        <p>Orbit Transfer Lab is an independent aerospace engineering project created by <strong>Ved Patel</strong>. It connects physics, programming, and visual design to help students understand how spacecraft change circular orbits.</p>
+        <p>The model is educational and idealized. It does not include atmospheric drag, plane changes, finite burn duration, orbital perturbations, launch windows, or real mission constraints, and should not be used for operational mission planning.</p>
+        <div class="tech-list"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Canvas API</span><span>Two-body mechanics</span></div>
+      </div>
+    </section>
+
+    <section class="section-shell references section-block">
+      <h2>References</h2>
+      <p>Equations and constants can be checked against NASA educational resources, NASA planetary fact sheets, and standard introductory orbital mechanics texts. Planetary values in this simulator are rounded for educational use.</p>
+      <div class="reference-links">
+        <a href="https://science.nasa.gov/solar-system/" target="_blank" rel="noreferrer">NASA Solar System Exploration ↗</a>
+        <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/" target="_blank" rel="noreferrer">NASA Planetary Fact Sheets ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>© <span id="year"></span> Ved Patel</span>
+    <span>Orbit Transfer Lab · Educational model</span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

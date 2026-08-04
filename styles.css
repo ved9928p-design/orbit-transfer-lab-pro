@@ -1,0 +1,147 @@
+:root {
+  --bg: #050811;
+  --bg-soft: #0a1020;
+  --panel: rgba(14, 22, 42, 0.82);
+  --panel-solid: #0e162a;
+  --line: rgba(255,255,255,0.11);
+  --text: #f5f7ff;
+  --muted: #a8b3cc;
+  --accent: #ff7a2f;
+  --accent-2: #72b8ff;
+  --green: #76e6b5;
+  --danger: #ff8a8a;
+  --radius: 22px;
+  --shadow: 0 24px 70px rgba(0,0,0,.34);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; color: var(--text); background: radial-gradient(circle at 70% 0%, #111d3f 0, var(--bg) 38%, #03050b 100%); font-family: Inter, system-ui, sans-serif; line-height: 1.6; }
+button, input, select { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+a { color: inherit; text-decoration: none; }
+#starfield { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: .56; z-index: -1; }
+.site-header { position: sticky; top: 0; z-index: 20; height: 72px; display:flex; align-items:center; justify-content:space-between; padding: 0 max(24px, calc((100vw - 1180px)/2)); backdrop-filter: blur(18px); background: rgba(5,8,17,.72); border-bottom:1px solid var(--line); }
+.brand { display:flex; align-items:center; gap:11px; font-family:"Space Grotesk",sans-serif; font-weight:700; }
+.brand-mark { display:grid; place-items:center; width:34px; height:34px; border:1px solid rgba(255,122,47,.7); border-radius:10px; color:var(--accent); font-size:.76rem; box-shadow: inset 0 0 18px rgba(255,122,47,.1); }
+nav { display:flex; gap:28px; color:var(--muted); font-size:.91rem; }
+nav a:hover { color:var(--text); }
+.section-shell { width:min(1180px, calc(100% - 40px)); margin-inline:auto; }
+.section-block { padding: 105px 0 0; }
+.hero { min-height: calc(100vh - 72px); display:grid; grid-template-columns:1.08fr .92fr; gap:72px; align-items:center; padding-top:64px; padding-bottom:70px; }
+.eyebrow { margin:0 0 10px; color:var(--accent); text-transform:uppercase; letter-spacing:.18em; font-size:.75rem; font-weight:800; }
+h1,h2,h3 { font-family:"Space Grotesk",sans-serif; line-height:1.08; margin-top:0; }
+h1 { font-size:clamp(3rem, 6.3vw, 6.2rem); letter-spacing:-.055em; margin-bottom:24px; }
+h1 span { color:var(--accent-2); }
+h2 { font-size:clamp(2.25rem, 4vw, 4rem); letter-spacing:-.04em; margin-bottom:18px; }
+h3 { font-size:1.28rem; margin-bottom:14px; }
+.hero-text, .section-heading > p:last-child { max-width:680px; color:var(--muted); font-size:1.04rem; }
+.hero-actions, .report-actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:30px; }
+.button { border:1px solid transparent; border-radius:12px; padding:13px 18px; font-weight:750; cursor:pointer; transition:transform .18s ease, border-color .18s ease, background .18s ease; text-align:center; }
+.button:hover { transform:translateY(-2px); }
+.button.primary { color:#111; background:linear-gradient(135deg,#ff985c,var(--accent)); box-shadow:0 10px 30px rgba(255,122,47,.22); }
+.button.secondary { background:rgba(114,184,255,.08); color:var(--text); border-color:rgba(114,184,255,.34); }
+.button.ghost { background:transparent; color:var(--muted); border-color:var(--line); }
+.full-width { width:100%; margin-top:10px; }
+.hero-stats { display:flex; gap:36px; margin-top:45px; }
+.hero-stats div { display:grid; }
+.hero-stats strong { font:700 1.9rem "Space Grotesk"; }
+.hero-stats span { color:var(--muted); font-size:.78rem; }
+.hero-visual { position:relative; aspect-ratio:1/1; display:grid; place-items:center; }
+.planet-preview { width:31%; aspect-ratio:1; border-radius:50%; background:radial-gradient(circle at 32% 28%, #9fd5ff, #28639c 34%, #13325a 64%, #07162b); box-shadow:0 0 70px rgba(74,148,235,.3), inset -24px -18px 42px rgba(0,0,0,.46); }
+.planet-preview span { display:block; width:100%; height:100%; border-radius:50%; background:linear-gradient(110deg,transparent 45%,rgba(0,0,0,.3)); }
+.orbit { position:absolute; border:1px solid rgba(114,184,255,.38); border-radius:50%; }
+.orbit-outer { width:80%; height:80%; animation:spin 18s linear infinite; }
+.orbit-transfer { width:65%; height:40%; border-color:rgba(255,122,47,.65); transform:rotate(-28deg); }
+.satellite { position:absolute; top:47%; right:-5px; width:12px; height:12px; border-radius:50%; background:#fff; box-shadow:0 0 18px #fff; }
+.visual-label { position:absolute; padding:6px 9px; border:1px solid var(--line); border-radius:7px; background:rgba(5,8,17,.78); color:var(--accent); font-weight:700; font-size:.78rem; }
+.label-one { left:16%; bottom:29%; }.label-two{right:13%; top:25%;}
+@keyframes spin { to { transform:rotate(360deg); } }
+.section-heading { margin-bottom:38px; }
+.card { background:linear-gradient(145deg, rgba(18,29,55,.88), rgba(8,14,29,.84)); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); }
+.simulator-grid { display:grid; grid-template-columns:370px 1fr; gap:20px; }
+.control-panel { padding:24px; }
+.panel-title-row { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.badge { border:1px solid rgba(118,230,181,.3); color:var(--green); background:rgba(118,230,181,.08); padding:4px 8px; border-radius:999px; font-size:.7rem; white-space:nowrap; }
+label,.field-label { display:block; color:#dce4f6; font-size:.82rem; font-weight:700; margin:17px 0 7px; }
+select,input { width:100%; color:var(--text); background:#081020; border:1px solid var(--line); border-radius:11px; padding:12px 13px; outline:none; }
+select:focus,input:focus { border-color:rgba(114,184,255,.7); box-shadow:0 0 0 3px rgba(114,184,255,.1); }
+.body-info { margin-top:10px; padding:11px 12px; border-radius:10px; background:rgba(114,184,255,.06); color:var(--muted); font-size:.76rem; }
+.body-info strong { color:var(--text); }
+.input-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.input-with-unit { position:relative; }
+.input-with-unit input { padding-right:58px; }
+.input-with-unit span { position:absolute; right:13px; top:50%; transform:translateY(-50%); color:var(--muted); font-size:.8rem; }
+.form-error { min-height:22px; margin:7px 0 0; color:var(--danger); font-size:.78rem; }
+.preset-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.preset { color:var(--muted); background:rgba(255,255,255,.025); border:1px solid var(--line); border-radius:9px; padding:9px 7px; cursor:pointer; font-size:.74rem; }
+.preset:hover { color:var(--text); border-color:rgba(255,122,47,.38); }
+.visualization-panel { padding:18px; min-width:0; }
+.visualization-topbar { display:flex; justify-content:space-between; align-items:center; color:var(--muted); font-size:.78rem; padding:0 4px 10px; }
+.status-dot { display:inline-block; width:8px; height:8px; margin-right:7px; border-radius:50%; background:var(--green); box-shadow:0 0 10px var(--green); }
+.text-button { border:0; background:transparent; color:var(--accent-2); cursor:pointer; }
+#orbitCanvas { display:block; width:100%; height:auto; min-height:390px; border-radius:15px; background:radial-gradient(circle at center,rgba(21,48,90,.35),rgba(2,5,12,.9) 66%); }
+.legend { display:flex; justify-content:center; flex-wrap:wrap; gap:22px; color:var(--muted); font-size:.73rem; padding-top:11px; }
+.legend-line { display:inline-block; width:20px; height:2px; margin-right:6px; vertical-align:middle; }.legend-line.initial{background:#72b8ff}.legend-line.transfer{background:#ff7a2f}.legend-line.target{background:#76e6b5}
+.results-section { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:18px; }
+.metric-card { padding:21px; display:grid; gap:3px; }
+.metric-card span { color:var(--muted); font-size:.76rem; text-transform:uppercase; letter-spacing:.09em; }
+.metric-card strong { font:700 clamp(1.5rem,2.3vw,2.2rem) "Space Grotesk"; }
+.metric-card small { color:var(--muted); font-size:.71rem; }
+.metric-card.featured { border-color:rgba(255,122,47,.5); box-shadow:0 20px 60px rgba(255,122,47,.09); }
+.mission-report { padding:28px; margin-top:18px; }
+.report-heading { display:flex; justify-content:space-between; gap:20px; border-bottom:1px solid var(--line); padding-bottom:18px; }
+.report-heading h3 { margin:0; font-size:1.7rem; }.report-heading span{color:var(--muted);font-size:.75rem;}
+.report-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0; margin-top:8px; }
+.report-item { padding:17px 14px; border-bottom:1px solid var(--line); }
+.report-item span { display:block; color:var(--muted); font-size:.72rem; }
+.report-item strong { font-size:.96rem; }
+.physics-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+.equation-card { padding:23px; }
+.equation-number { color:var(--accent); font-size:.7rem; font-weight:800; letter-spacing:.1em; }
+.equation { color:var(--accent-2); font:600 1.18rem "Space Grotesk"; }
+.equation-card > p:last-child { color:var(--muted); font-size:.82rem; }
+.calculation-steps { margin-top:18px; padding:0 24px; }
+.calculation-steps summary { cursor:pointer; padding:20px 0; font-weight:750; }
+.steps-content { border-top:1px solid var(--line); padding:18px 0 24px; display:grid; gap:10px; }
+.step-row { display:grid; grid-template-columns:32px 1fr; gap:12px; align-items:start; }
+.step-index { width:28px; height:28px; display:grid; place-items:center; border-radius:50%; background:rgba(255,122,47,.12); color:var(--accent); font-size:.72rem; font-weight:800; }
+.step-row p { margin:0; color:var(--muted); font-size:.87rem; }.step-row strong{color:var(--text)}
+.challenge-section { display:grid; grid-template-columns:1.2fr .8fr; gap:50px; align-items:center; }
+.challenge-entry { display:flex; gap:10px; max-width:500px; margin-top:24px; }.challenge-entry .input-with-unit{flex:1}
+.challenge-feedback { min-height:26px; color:var(--accent-2); }
+.challenge-card { padding:27px; }
+.challenge-label { color:var(--accent); letter-spacing:.17em; font-size:.7rem; font-weight:800; }
+.challenge-card h3 { margin-top:13px; }
+.challenge-card > div { display:flex; justify-content:space-between; border-top:1px solid var(--line); padding:13px 0; color:var(--muted); font-size:.83rem; }.challenge-card strong{color:var(--text)}
+.about-section { display:grid; grid-template-columns:.8fr 1.2fr; gap:70px; }
+.about-content { color:var(--muted); }
+.tech-list { display:flex; flex-wrap:wrap; gap:8px; margin-top:22px; }.tech-list span{border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:.72rem;color:#dbe4f5}
+.references { padding-bottom:90px; }.references h2{font-size:2rem}.references p{color:var(--muted);max-width:760px}.reference-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}.reference-links a{color:var(--accent-2);font-size:.85rem}
+footer { border-top:1px solid var(--line); display:flex; justify-content:space-between; padding:26px max(20px, calc((100vw - 1180px)/2)); color:var(--muted); font-size:.76rem; }
+@media (max-width: 900px) {
+  nav { display:none; }
+  .hero { grid-template-columns:1fr; min-height:auto; padding-top:100px; }
+  .hero-visual { width:min(560px,100%); justify-self:center; }
+  .simulator-grid { grid-template-columns:1fr; }
+  .results-section,.physics-grid { grid-template-columns:1fr 1fr; }
+  .challenge-section,.about-section { grid-template-columns:1fr; gap:25px; }
+}
+@media (max-width: 570px) {
+  .section-shell { width:min(100% - 24px,1180px); }
+  .site-header { padding-inline:14px; }
+  .hero { gap:35px; }.hero-stats{gap:18px}.hero-stats span{font-size:.67rem}
+  .input-grid,.preset-grid,.results-section,.physics-grid,.report-grid { grid-template-columns:1fr; }
+  .visualization-panel { padding:9px; }
+  #orbitCanvas { min-height:330px; }
+  .report-heading,.challenge-entry,footer { flex-direction:column; }
+  footer { gap:6px; }
+}
+@media print {
+  body { background:white; color:black; }
+  #starfield,.site-header,.hero,.control-panel,.visualization-panel,.results-section,#physics,#challenge,#about,.references,footer,.report-actions { display:none!important; }
+  #simulator { padding:0; width:100%; }
+  .section-heading { display:none; }
+  .simulator-grid { display:none; }
+  .mission-report { color:black; box-shadow:none; border:1px solid #aaa; background:white; }
+  .report-item span,.report-heading span { color:#555; }
+}

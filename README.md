@@ -1,30 +1,48 @@
 # Orbit Transfer Lab
 
-An interactive educational Hohmann-transfer simulator created by Ved Patel.
+An interactive educational simulator for visualizing Hohmann transfer orbits and learning the fundamentals of orbital mechanics.
 
 ## Features
 
 - Earth, Moon, and Mars central-body modes
 - Raising and lowering Hohmann transfers
+- Real-time delta-v and transfer-time calculations
 - Animated orbital visualization
-- Delta-v and transfer-time calculations
-- Mission report, copy, download, and print tools
+- Mission report with copy, download, and print options
 - Step-by-step equations using the user's inputs
 - Guided GEO mission challenge
-- Responsive mobile layout
+- Responsive mobile-friendly interface
 - Input validation and physical-model assumptions
 
-## Run locally
+## Run Locally
 
-Open `index.html` in a browser. No installation or build tools are required.
+Simply open `index.html` in any modern web browser.
 
-## Publish with GitHub Pages
+No installation or build tools are required.
 
-1. Upload `index.html`, `styles.css`, and `script.js` to the root of a GitHub repository.
-2. Open repository **Settings → Pages**.
+## GitHub Pages
+
+1. Upload `index.html`, `styles.css`, and `script.js` to the root of your repository.
+2. Open **Settings → Pages**.
 3. Under **Build and deployment**, choose **Deploy from a branch**.
-4. Select the `main` branch and `/ (root)`, then save.
+4. Select the **main** branch and **/(root)**, then click **Save**.
 
-## Model limitations
+## Educational Assumptions
 
-This is an educational ideal two-body model. It assumes circular coplanar orbits and instantaneous burns. It does not model drag, perturbations, finite burn duration, launch windows, plane changes, or mission operations.
+This simulator uses the ideal two-body approximation.
+
+It assumes:
+
+- Circular, coplanar orbits
+- Instantaneous impulsive burns
+- No atmospheric drag
+- No orbital perturbations
+- No plane changes
+- No finite burn duration
+- No launch-window optimization
+
+This project is intended for educational use and should not be used for real mission planning.
+
+---
+
+Created by **Ved Patel**
